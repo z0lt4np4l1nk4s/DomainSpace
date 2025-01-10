@@ -1,0 +1,48 @@
+name: Deploy .NET Api
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  build_api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Restore dependencies
+        working-directory: ./DomainSpaceBackend
+        run: dotnet restore
+
+      - name: Build the app
+        working-directory: ./DomainSpaceBackend
+        run: dotnet publish -c Release -o ./publish
+
+      - name: Install sshpass
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
+      - name: Deploy to VPS
+        env:
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+        run: |
+          echo "Deploying to the VPS..."
+          sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./DomainSpaceBackend/publish/* ${{ secrets.SSH_USER }}@${{ secrets.VPS_IP }}:/var/www/${{ secrets.API_FOLDER_NAME }}
+
+      - name: Restart API Service
+        env:
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+        run: |
+          echo "Restarting the API service on the VPS..."
+          sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.VPS_IP }} << EOF
+            # Restart the service
+            sudo systemctl restart kestrel-${{ secrets.API_FOLDER_NAME }}.service
+          EOF

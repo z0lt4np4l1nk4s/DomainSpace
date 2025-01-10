@@ -1,0 +1,17 @@
+﻿global using Microsoft.EntityFrameworkCore;
+global using DomainSpace.Abstraction.Repository.EF;
+global using DomainSpace.Common.Dto;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using DomainSpace.Model.Entity;
+global using DomainSpace.Common.Extensions;
+global using DomainSpace.Abstraction.Repository.Dapper;
+global using System.Reflection;
+global using System.Text;
+global using DomainSpace.Model.Dto;
+global using DomainSpace.Model.Filter;
+global using Dapper;
+global using DomainSpace.Common.Util;
+global using System.Data;
+global using DomainSpace.Common.Options;
+global using Microsoft.Extensions.Options;
+global using DomainSpace.Common.Constants;

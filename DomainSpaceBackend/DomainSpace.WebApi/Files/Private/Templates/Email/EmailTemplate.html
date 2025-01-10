@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@{{AppName}}</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #343a40;
+            color: #f8f9fa;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #495057;
+            border: 1px solid #6c757d;
+            border-radius: 0.25rem;
+            overflow: hidden;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        /* Header */
+        .header {
+            background-color: #212529;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+
+            .header img {
+                width: 80px;
+                margin-bottom: 10px;
+            }
+
+            .header h1 {
+                margin: 10px 0;
+                font-size: 24px;
+                font-weight: bold;
+            }
+
+        /* Content Section */
+        .content {
+            padding: 20px;
+            text-align: left;
+            color: #f8f9fa;
+        }
+
+            .content h2 {
+                font-size: 20px;
+                margin-top: 0;
+                color: #ffffff;
+            }
+
+            .content p {
+                font-size: 16px;
+                line-height: 1.5;
+                margin: 10px 0;
+                color: #adb5bd;
+            }
+
+        .cta-button {
+            background-color: #17a2b8;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 0.25rem;
+            display: inline-block;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+            .cta-button:hover {
+                background-color: #138496;
+                color: white;
+            }
+
+        /* Footer */
+        .footer {
+            background-color: #343a40;
+            color: #adb5bd;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            border-top: 1px solid #6c757d;
+        }
+
+            .footer p {
+                margin: 5px 0;
+            }
+
+            .footer a {
+                color: #17a2b8;
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+    <!-- Main container -->
+    <div class="container">
+        <!-- Header -->
+        @{{Header}}
+
+        <!-- Content -->
+        @{{Content}}
+
+        <!-- Footer -->
+        @{{Footer}}
+    </div>
+</body>
+</html>

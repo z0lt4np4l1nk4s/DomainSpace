@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Dapper\Sql\**\*.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="dapper\sql\content\CountAsync.sql" />
+    <None Remove="dapper\sql\content\GetByIdAsync.sql" />
+    <None Remove="dapper\sql\user\CountAsync.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dapper\Sql\Content\" />
+    <Folder Include="Dapper\Sql\User\" />
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Dapper.SqlBuilder" Version="2.0.78" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.36" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.36">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.29" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DomainSpace.Abstraction\DomainSpace.Abstraction.csproj" />
+    <ProjectReference Include="..\DomainSpace.Model\DomainSpace.Model.csproj" />
+  </ItemGroup>
+
+</Project>
