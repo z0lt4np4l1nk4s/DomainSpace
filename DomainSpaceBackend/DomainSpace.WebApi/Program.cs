@@ -1,5 +1,20 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+if (builder.Environment.IsProduction())
+{
+    builder.Configuration
+        .AddJsonFile("appsettings.Production.json", optional: false, reloadOnChange: true)
+        .AddEnvironmentVariables();
+}
+else if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration
+        .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
+}
+
 // App options
 var appOptionsSection = builder.Configuration.GetSection("AppOptions");
 var _appOptions = appOptionsSection.Get<AppOptions>();
