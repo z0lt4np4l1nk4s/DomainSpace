@@ -197,10 +197,10 @@ namespace DomainSpace.Repository.Migrations
                 column: "NormalizedUserName",
                 unique: true);
 
-            Guid adminRoleId = UserIdentifiers.AdminId;
+            Guid adminRoleId = Guid.NewGuid();
             Guid moderatorRoleId = Guid.NewGuid();
             Guid userRoleId = Guid.NewGuid();
-            Guid adminUserId = Guid.NewGuid();
+            Guid adminUserId = UserIdentifiers.AdminId;
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
