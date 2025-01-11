@@ -18,14 +18,15 @@ jobs:
         with:
           node-version: 16
 
-      - name: Navigate to project folder
-        run: cd DomainSpaceFrontend
-
-      - name: Install dependencies
-        run: npm install
+      - name: Navigate to project folder and install dependencies
+        run: |
+          cd DomainSpaceFrontend
+          npm install
 
       - name: Build the app
-        run: npm run build:production
+        run: |
+          cd DomainSpaceFrontend
+          CI=false npm run build:production
 
       - name: Install sshpass
         run: |
@@ -45,5 +46,5 @@ jobs:
         run: |
           echo "Reloading Nginx on the VPS..."
           sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.VPS_IP }} << EOF
-            sudo systemctl reload nginx
+            echo "$SSH_PASSWORD" | sudo -S systemctl reload nginx
           EOF
