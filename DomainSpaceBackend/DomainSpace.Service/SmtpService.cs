@@ -67,13 +67,8 @@ public class SmtpService : ISmtpService
             Text = emailTemplate,
         };
 
-        var tasks = new Task[]
-        {
-            client.SendAsync(emailMessage, cancellationToken),
-            _repository.AddRangeAsync(emailEntities, cancellationToken)
-        };
-
-        await Task.WhenAll(tasks);
+        var emailResult = await client.SendAsync(emailMessage, cancellationToken);
+        var addRsult = await _repository.AddRangeAsync(emailEntities, cancellationToken);
 
         return ServiceResult.Success();
     }
@@ -107,7 +102,7 @@ public class SmtpService : ISmtpService
     private async Task<SmtpClient> GetSmtpClientAsync(CancellationToken cancellationToken = default)
     {
         var client = new SmtpClient();
-        await client.ConnectAsync(_smtpOptions.Host, _smtpOptions.Port!.Value, _smtpOptions.UseSsl ? SecureSocketOptions.StartTls : SecureSocketOptions.None, cancellationToken);
+        await client.ConnectAsync(_smtpOptions.Host, _smtpOptions.Port!.Value, _smtpOptions.UseSsl ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.None, cancellationToken);
 
         if (_smtpOptions.RequireAuth)
         {
