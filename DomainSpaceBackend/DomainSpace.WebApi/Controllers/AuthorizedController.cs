@@ -49,7 +49,7 @@ public class AuthorizedController : ControllerBase
     {
         get
         {
-            var email = User.FindFirstValue("Email");
+            var email = User.FindFirstValue(ClaimTypes.Email);
             var splitted = email.Split(new string[] { "@" }, StringSplitOptions.RemoveEmptyEntries);
 
             if (splitted.Length != 2)

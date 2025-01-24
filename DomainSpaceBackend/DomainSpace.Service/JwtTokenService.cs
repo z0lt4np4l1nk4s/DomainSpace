@@ -38,7 +38,7 @@ public class JwtTokenService : ITokenService
 
         var claims = new List<Claim>()
         {
-            new("email", options.Email),
+            new(ClaimTypes.Email, options.Email),
             new(ClaimTypes.NameIdentifier, options.UserId.ToString()),
         };
 
