@@ -9,7 +9,7 @@ import {
   ResetPasswordModel,
   ResponseModel,
 } from "../types";
-import { UserDataService } from "./UserDataService";
+import { TokenService } from "./TokenService";
 
 const URL_PREFIX = API_URL_PREFIX + "/auth";
 
@@ -23,9 +23,10 @@ export class AuthService {
       });
 
       if (response.status === 200) {
-        const result = AuthResponseModel.fromJson(response.data.result);
+        const result = response.data.result;
 
-        UserDataService.setUserAuthData(result);
+        TokenService.setAuthToken(result.token);
+        TokenService.setRefreshToken(result.refreshToken);
 
         return ResponseModel.success();
       }
@@ -42,9 +43,9 @@ export class AuthService {
   }
 
   async logoutAsync(): Promise<ResponseModel<boolean>> {
-    const userToken = UserDataService.getUserToken();
+    const payload = TokenService.getUserPayload();
 
-    if (userToken == null) {
+    if (payload == null) {
       return ResponseModel.failure();
     }
 
@@ -60,7 +61,7 @@ export class AuthService {
       );
 
       if (response.status === 200) {
-        UserDataService.removeUserData();
+        TokenService.removeTokens();
         return ResponseModel.success();
       }
     } catch {}
@@ -86,23 +87,23 @@ export class AuthService {
   }
 
   async isAuthenticatedAsync(): Promise<boolean> {
-    const userToken = UserDataService.getUserToken();
+    const payload = TokenService.getUserPayload();
 
-    if (userToken == null) {
+    if (payload == null) {
       return false;
     }
     const now = new Date();
-    const tokenExpiry = new Date(userToken.expirationTime);
+    const tokenExpiry = new Date(payload.expirationTime);
 
     if (tokenExpiry < now) {
-      if (!userToken.refreshToken) {
+      if (!TokenService.getRefreshToken()) {
         return false;
       }
 
       const result = await this.refreshTokenAsync();
 
       if (!result.isSuccess) {
-        UserDataService.removeUserData();
+        TokenService.removeTokens();
         return false;
       }
     }
@@ -111,9 +112,9 @@ export class AuthService {
   }
 
   async refreshTokenAsync(): Promise<ResponseModel<any>> {
-    const userToken = UserDataService.getUserToken();
+    const payload = TokenService.getUserPayload();
 
-    if (userToken == null) {
+    if (payload == null) {
       return ResponseModel.failure();
     }
 
@@ -121,15 +122,16 @@ export class AuthService {
       const response = await axios.post(
         URL_PREFIX + `/refresh-token`,
         {
-          refreshToken: userToken.refreshToken,
+          refreshToken: TokenService.getRefreshToken(),
         },
         { headers: HttpHeaders.get() }
       );
 
       if (response.status === 200) {
-        const result = AuthResponseModel.fromJson(response.data.result);
+        const result = response.data.result;
 
-        UserDataService.setUserAuthData(result);
+        TokenService.setAuthToken(result.token);
+        TokenService.setRefreshToken(result.refreshTokenoken);
 
         return ResponseModel.success();
       }

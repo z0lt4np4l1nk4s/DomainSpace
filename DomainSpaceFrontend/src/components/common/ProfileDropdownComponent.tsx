@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { PageRouteEnum } from "../../types";
 import { NavigationLink } from "../navigation";
-import { AuthService, UserDataService } from "../../services";
+import { AuthService, TokenService } from "../../services";
 import { ToastUtil } from "../../utils";
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +26,7 @@ export default function ProfileDropdownComponent() {
         data-bs-toggle="dropdown"
         aria-expanded={isOpen ? "true" : "false"}
       >
-        <span className="ms-2">{UserDataService.getUserToken()?.email}</span>
+        <span className="ms-2">{TokenService.getUserPayload()?.email}</span>
       </a>
       <ul
         className={`dropdown-menu dropdown-menu-end ${

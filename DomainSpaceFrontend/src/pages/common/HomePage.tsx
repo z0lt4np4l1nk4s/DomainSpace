@@ -1,9 +1,9 @@
 import { LandingPage } from ".";
-import { UserDataService } from "../../services";
+import { TokenService } from "../../services";
 import { ContentPage } from "../content";
 
 export default function HomePage() {
-  if (!UserDataService.isAuthenticated()) {
+  if (!TokenService.isAuthenticated()) {
     return <LandingPage />;
   }
 

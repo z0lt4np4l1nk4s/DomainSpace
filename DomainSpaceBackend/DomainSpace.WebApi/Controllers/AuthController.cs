@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace DomainSpace.WebApi.Controllers;
+﻿namespace DomainSpace.WebApi.Controllers;
 
 /// <summary>
 /// Auth controller
@@ -24,6 +22,9 @@ public partial class AuthController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
     public AuthController(IAuthService authService)
     {
         _authService = authService;

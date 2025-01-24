@@ -11,4 +11,5 @@ public class ControllerNames
     public const string Subject = "api/subject";
     public const string File = "api/file";
     public const string Like = "api/like";
+    public const string Joke = "api/joke";
 }

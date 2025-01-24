@@ -6,7 +6,7 @@ import {
 } from "../../types";
 import { FaEllipsisH } from "react-icons/fa";
 import { DefaultButton, DropdownButton, LikeButtonComponent } from "../common";
-import { UserDataService } from "../../services";
+import { TokenService } from "../../services";
 import { useNavigate } from "react-router-dom";
 
 export default function ContentCardComponent({
@@ -27,8 +27,8 @@ export default function ContentCardComponent({
     );
 
     if (
-      UserDataService.isInRole(RoleEnum.Admin) ||
-      UserDataService.getUserId() === item.user?.userId
+      TokenService.isInRole(RoleEnum.Admin) ||
+      TokenService.getUserId() === item.user?.userId
     ) {
       options.push(
         new DropdownButtonModel("Edit", () => {
@@ -40,7 +40,7 @@ export default function ContentCardComponent({
           onDeleteClick(item);
         })
       );
-    } else if (UserDataService.isInRole(RoleEnum.Moderator)) {
+    } else if (TokenService.isInRole(RoleEnum.Moderator)) {
       options.push(
         new DropdownButtonModel("Delete", () => {
           onDeleteClick(item);
@@ -72,7 +72,7 @@ export default function ContentCardComponent({
           <p className="card-text max-5-rows">{item.text}</p>
           <div className="d-flex justify-content-between align-items-center mt-2">
             <div>
-              <strong>{(item?.files || []).length} Files</strong>
+              <strong>{(item?.files || []).length} File(s)</strong>
             </div>
 
             <div>

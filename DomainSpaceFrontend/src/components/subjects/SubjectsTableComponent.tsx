@@ -1,6 +1,6 @@
 import { DefaultButton, TableComponent } from "../common";
 import { RoleEnum, SubjectModel } from "../../types";
-import { UserDataService } from "../../services";
+import { TokenService } from "../../services";
 
 export default function SubjectsTableComponent({
   items,
@@ -21,7 +21,7 @@ export default function SubjectsTableComponent({
           <th scope="col" className="col-4">
             {"Name"}
           </th>
-          {UserDataService.isInRole(RoleEnum.Admin) && (
+          {TokenService.isInRole(RoleEnum.Admin) && (
             <th scope="col" className="col-4">
               {"Domain"}
             </th>
@@ -35,7 +35,7 @@ export default function SubjectsTableComponent({
         {items.map((item) => (
           <tr key={item.id}>
             <td>{item.name}</td>
-            {UserDataService.isInRole(RoleEnum.Admin) && <td>{item.domain}</td>}
+            {TokenService.isInRole(RoleEnum.Admin) && <td>{item.domain}</td>}
             <td>
               <div className="btn-group gap-1">
                 <DefaultButton

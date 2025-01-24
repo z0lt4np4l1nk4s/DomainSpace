@@ -23,10 +23,6 @@ public class JwtTokenService : ITokenService
 
         var model = new TokenCreatedDto
         {
-            ExpirationTime = expirationTime,
-            UserId = options.UserId,
-            Email = options.Email,
-            Roles = options.Roles,
             Token = CreateJwtToken(options, creationTime, expirationTime),
             RefreshToken = options.UserId.ToString() + "|" + Convert.ToBase64String(RandomNumberGenerator.GetBytes(_jwtTokenOptions.RefreshTokenLength ?? 64))
         };
@@ -42,7 +38,7 @@ public class JwtTokenService : ITokenService
 
         var claims = new List<Claim>()
         {
-            new("Email", options.Email),
+            new("email", options.Email),
             new(ClaimTypes.NameIdentifier, options.UserId.ToString()),
         };
 

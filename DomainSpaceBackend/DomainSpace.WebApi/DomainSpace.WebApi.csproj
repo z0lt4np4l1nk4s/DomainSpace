@@ -26,4 +26,22 @@
     <ProjectReference Include="..\DomainSpace.Service\DomainSpace.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Files\Private\Templates\Email\EmailTemplate.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\Private\Templates\Email\Footer.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\Private\Templates\Email\Header.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\Private\Templates\Email\ResetPasswordEmail.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\Private\Templates\Email\WelcomeEmail.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

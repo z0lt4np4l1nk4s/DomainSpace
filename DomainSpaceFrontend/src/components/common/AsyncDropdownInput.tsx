@@ -52,6 +52,7 @@ export default function AsyncDropdownInput({
         </div>
       )}
       <AsyncSelect
+        id={name}
         name={name}
         cacheOptions
         loadOptions={loadOptions}

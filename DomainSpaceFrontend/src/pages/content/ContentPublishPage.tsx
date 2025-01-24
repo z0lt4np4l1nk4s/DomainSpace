@@ -14,11 +14,7 @@ import {
   RoleEnum,
   SubjectFilter,
 } from "../../types";
-import {
-  ContentService,
-  SubjectService,
-  UserDataService,
-} from "../../services";
+import { ContentService, SubjectService, TokenService } from "../../services";
 import { SingleValue } from "react-select";
 import { ToastUtil } from "../../utils";
 import { useNavigate } from "react-router-dom";
@@ -42,7 +38,7 @@ export default function ContentPublishPage() {
       ([key, isValid]) => {
         if (
           ["domain"].includes(key) &&
-          !UserDataService.isInRole(RoleEnum.Admin)
+          !TokenService.isInRole(RoleEnum.Admin)
         ) {
           return true;
         }
@@ -136,7 +132,7 @@ export default function ContentPublishPage() {
               <div className="row justify-content-center">
                 <div className="col-md-6">
                   <InputForm onSubmit={handleSubmit}>
-                    {UserDataService.isInRole(RoleEnum.Admin) && (
+                    {TokenService.isInRole(RoleEnum.Admin) && (
                       <TextInput
                         title="Domain"
                         name="domain"

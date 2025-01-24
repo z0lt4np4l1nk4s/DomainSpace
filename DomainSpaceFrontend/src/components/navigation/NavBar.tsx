@@ -1,20 +1,20 @@
 import DefaultNavBar from "./DefaultNavBar";
-import { UserDataService } from "../../services";
+import { TokenService } from "../../services";
 import { RoleEnum } from "../../types";
 import AdminNavBar from "./AdminNavBar";
 import ModeratorNavBar from "./ModeratorNavBar";
 import UserNavBar from "./UserNavBar";
 
 export default function NavBar() {
-  if (UserDataService.isInRole(RoleEnum.Admin)) {
+  if (TokenService.isInRole(RoleEnum.Admin)) {
     return <AdminNavBar />;
   }
 
-  if (UserDataService.isInRole(RoleEnum.Moderator)) {
+  if (TokenService.isInRole(RoleEnum.Moderator)) {
     return <ModeratorNavBar />;
   }
 
-  if (UserDataService.isInRole(RoleEnum.User)) {
+  if (TokenService.isInRole(RoleEnum.User)) {
     return <UserNavBar />;
   }
 

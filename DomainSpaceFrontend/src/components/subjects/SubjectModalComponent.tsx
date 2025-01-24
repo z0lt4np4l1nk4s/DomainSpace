@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import DefaultButton from "../common/DefaultButton";
 import TextInput from "../common/TextInput";
 import { RoleEnum, SubjectModel } from "../../types";
-import { UserDataService } from "../../services";
+import { TokenService } from "../../services";
 
 export default function SubjectModalComponent({
   title,
@@ -57,7 +57,7 @@ export default function SubjectModalComponent({
       ([key, isValid]) => {
         if (
           ["domain"].includes(key) &&
-          !UserDataService.isInRole(RoleEnum.Admin)
+          !TokenService.isInRole(RoleEnum.Admin)
         ) {
           return true;
         }
@@ -117,7 +117,7 @@ export default function SubjectModalComponent({
                   }}
                   onValidationChange={handleValidationChange}
                 />
-                {UserDataService.isInRole(RoleEnum.Admin) && (
+                {TokenService.isInRole(RoleEnum.Admin) && (
                   <TextInput
                     title={"Domain"}
                     name="domain"

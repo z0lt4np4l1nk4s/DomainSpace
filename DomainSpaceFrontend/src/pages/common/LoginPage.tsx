@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   DefaultButton,
   FooterComponent,
@@ -63,6 +63,16 @@ export default function LoginPage() {
       ToastUtil.showErrorMessage(result.errorMessage?.description);
     }
   };
+
+  useEffect(() => {
+    const checkAuthenticationAsync = async () => {
+      if (await authService.isAuthenticatedAsync()) {
+        navigate(PageRouteEnum.Home);
+      }
+    };
+
+    checkAuthenticationAsync();
+  }, []);
 
   return (
     <div className="d-flex flex-column vh-100">

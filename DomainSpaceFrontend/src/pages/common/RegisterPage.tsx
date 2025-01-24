@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { PageRouteEnum, RegisterModel } from "../../types";
 import {
   DateInput,
@@ -54,6 +54,16 @@ export default function RegisterPage() {
       ToastUtil.showErrorMessage(response.errorMessage?.description);
     }
   };
+
+  useEffect(() => {
+    const checkAuthenticationAsync = async () => {
+      if (await authService.isAuthenticatedAsync()) {
+        navigate(PageRouteEnum.Home);
+      }
+    };
+
+    checkAuthenticationAsync();
+  }, []);
 
   return (
     <div className="d-flex flex-column vh-100">

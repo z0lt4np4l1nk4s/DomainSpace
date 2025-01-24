@@ -3,7 +3,7 @@ import {
   HubConnection,
   HubConnectionBuilder,
 } from "@microsoft/signalr";
-import { UserDataService } from "./UserDataService";
+import { TokenService } from "./TokenService";
 import { HUB_URL } from "../config";
 
 export class SignalRService {
@@ -23,7 +23,7 @@ export class SignalRService {
       this.connection = new HubConnectionBuilder()
         .withUrl(HUB_URL, {
           accessTokenFactory: () => {
-            return UserDataService.getUserToken()!.token;
+            return TokenService.getAuthToken() || "";
           },
           transport: HttpTransportType.WebSockets,
           withCredentials: true,

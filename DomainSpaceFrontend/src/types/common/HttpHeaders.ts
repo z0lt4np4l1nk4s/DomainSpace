@@ -1,11 +1,9 @@
-import { UserDataService } from "../../services";
+import { TokenService } from "../../services";
 
 export class HttpHeaders {
   static get() {
-    const userToken = UserDataService.getUserToken();
-
     return {
-      Authorization: "Bearer " + userToken?.token,
+      Authorization: "Bearer " + TokenService.getAuthToken(),
       "Content-Type": "application/json",
     };
   }

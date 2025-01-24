@@ -15,6 +15,7 @@ import { ChangePasswordModel } from "./ChangePasswordModel";
 import { UpdateUserModel } from "./UpdateUserModel";
 import { ResetPasswordModel } from "./ResetPasswordModel";
 import { LikeModel } from "./LikeModel";
+import { JokeModel } from "./JokeModel";
 
 export {
   AuthResponseModel,
@@ -34,4 +35,5 @@ export {
   UpdateUserModel,
   ResetPasswordModel,
   LikeModel,
+  JokeModel,
 };

@@ -35,6 +35,7 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddScoped<ISmtpService, SmtpService>();
         builder.Services.AddScoped<IHubService, HubService>();
         builder.Services.AddScoped<ILikeService, LikeService>();
+        builder.Services.AddScoped<IJokeService, JokeService>();
 
         return builder;
     }

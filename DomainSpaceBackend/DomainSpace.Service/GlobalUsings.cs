@@ -27,3 +27,4 @@ global using MimeKit;
 global using System.Text.Json;
 global using Microsoft.AspNetCore.SignalR;
 global using System.IO.Compression;
+global using System.Net;

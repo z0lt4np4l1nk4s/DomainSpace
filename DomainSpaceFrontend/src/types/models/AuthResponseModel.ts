@@ -2,21 +2,10 @@ export class AuthResponseModel {
   userId: string;
   email?: string;
   roles: string[];
-  token: string;
-  refreshToken: string;
   expirationTime: Date;
 
-  constructor({
-    token,
-    expirationTime,
-    refreshToken,
-    roles,
-    userId,
-    email,
-  }: AuthResponseModel) {
-    this.token = token;
+  constructor({ expirationTime, roles, userId, email }: AuthResponseModel) {
     this.expirationTime = expirationTime;
-    this.refreshToken = refreshToken;
     this.roles = roles;
     this.userId = userId;
     this.email = email;
@@ -24,12 +13,9 @@ export class AuthResponseModel {
 
   static fromJson(data: any): AuthResponseModel {
     return new AuthResponseModel({
-      token: data["token"],
-      expirationTime:
-        data["expirationTime"] && new Date(data["expirationTime"]),
-      refreshToken: data["refreshToken"],
-      roles: data["roles"],
-      userId: data["userId"],
+      expirationTime: data["exp"] && new Date(data["exp"] * 1000),
+      roles: data["role"],
+      userId: data["nameid"],
       email: data["email"],
     });
   }

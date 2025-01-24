@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LikeService, UserDataService } from "../../services";
+import { LikeService, TokenService } from "../../services";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { ContentModel } from "../../types";
 import { LikeModel } from "../../types/models/LikeModel";
@@ -16,7 +16,7 @@ export default function LikeButtonComponent({
   const handleLike = async () => {
     const model = new LikeModel({
       contentId: content.id,
-      userId: UserDataService.getUserId()!,
+      userId: TokenService.getUserId()!,
     });
     if (liked) {
       const response = await likeService.dislikeAsync(model);

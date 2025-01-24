@@ -3,7 +3,7 @@ import { PageRouteEnum, RoleEnum } from "../../types";
 import { Navigate } from "react-router-dom";
 import NotFoundPage from "./NotFoundPage";
 import { Loader } from "../../components";
-import { AuthService, UserDataService } from "../../services";
+import { AuthService, TokenService } from "../../services";
 
 const authService = new AuthService();
 
@@ -36,14 +36,14 @@ export default function AuthPage({
     );
   }
 
-  const userToken = UserDataService.getUserToken();
+  const payload = TokenService.getUserPayload();
 
   if (
     !roles ||
     (roles &&
-      userToken &&
-      userToken.roles &&
-      !roles.some((item) => userToken.roles.includes(item)))
+      payload &&
+      payload.roles &&
+      !roles.some((item) => payload.roles.includes(item)))
   ) {
     return <NotFoundPage />;
   }

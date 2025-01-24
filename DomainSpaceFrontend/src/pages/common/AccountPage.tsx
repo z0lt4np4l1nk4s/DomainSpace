@@ -8,7 +8,7 @@ import {
   TextInput,
 } from "../../components";
 import { ChangePasswordModel, UpdateUserModel } from "../../types";
-import { AuthService, UserDataService, UserService } from "../../services";
+import { AuthService, TokenService, UserService } from "../../services";
 import { ToastUtil } from "../../utils";
 
 const userService = new UserService();
@@ -45,7 +45,7 @@ export default function AccountPage() {
     event.preventDefault();
 
     const result = await userService.updateAsync(
-      UserDataService.getUserId()!,
+      TokenService.getUserId()!,
       profileFormData
     );
 
@@ -78,7 +78,7 @@ export default function AccountPage() {
   useEffect(() => {
     const getUserByIdAsync = async () => {
       const response = await userService.getByIdAsync(
-        UserDataService.getUserId() || ""
+        TokenService.getUserId() || ""
       );
 
       if (response.isSuccess) {
