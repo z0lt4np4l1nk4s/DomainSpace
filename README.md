@@ -1,11 +1,11 @@
 # DomainSpace
 
+**DomainSpace** is a content sharing app where users can share and view content, but only with others who have registered with the same email domain. The app has different user roles, each with varying levels of access and permissions.
+
 ## Build and Deploy Status
 
 [![Deploy .NET Api](https://github.com/z0lt4np4l1nk4s/DomainSpace/actions/workflows/dotnet.yml/badge.svg)](https://github.com/z0lt4np4l1nk4s/DomainSpace/actions/workflows/dotnet.yml)
 [![Deploy React App](https://github.com/z0lt4np4l1nk4s/DomainSpace/actions/workflows/react.yml/badge.svg)](https://github.com/z0lt4np4l1nk4s/DomainSpace/actions/workflows/react.yml)
-
-**DomainSpace** is a content sharing app where users can share and view content, but only with others who have registered with the same email domain. The app has different user roles, each with varying levels of access and permissions.
 
 ## Features
 
