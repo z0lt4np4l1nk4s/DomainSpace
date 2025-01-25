@@ -8,6 +8,24 @@ const jokeService = new JokeService();
 export default function LandingPage() {
   const [joke, setJoke] = useState<JokeModel>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [displayedText, setDisplayedText] = useState("");
+
+  useEffect(() => {
+    setDisplayedText("");
+    if (!joke?.joke) {
+      return;
+    }
+    let index = -1;
+    const typeWriter = () => {
+      if (index < joke.joke!.length - 1) {
+        setDisplayedText((prev) => prev + joke.joke![index]);
+        index++;
+        setTimeout(typeWriter, 35);
+      }
+    };
+
+    typeWriter();
+  }, [joke.joke]);
 
   useEffect(() => {
     const getJokeAsync = async () => {
@@ -101,7 +119,7 @@ export default function LandingPage() {
                             joke.txt
                           </div>
 
-                          <div className="p-3">{joke.joke}</div>
+                          <div className="p-3">{displayedText}</div>
                         </div>
                       </div>
                     ) : (
@@ -141,7 +159,7 @@ export default function LandingPage() {
               <h2 className="text-center mb-5">Key Features</h2>
               <div className="row g-4">
                 <div className="col-md-4">
-                  <div className="card h-100 shadow-sm border-light rounded-lg">
+                  <div className="card h-100 shadow-sm rounded-lg bg-dark">
                     <div className="card-body">
                       <h5 className="card-title fw-bold">
                         Domain-Based Privacy
@@ -154,7 +172,7 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <div className="col-md-4">
-                  <div className="card h-100 shadow-sm border-light rounded-lg">
+                  <div className="card h-100 shadow-sm rounded-lg">
                     <div className="card-body">
                       <h5 className="card-title fw-bold">Easy Sharing</h5>
                       <p className="card-text">
@@ -165,7 +183,7 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <div className="col-md-4">
-                  <div className="card h-100 shadow-sm border-light rounded-lg">
+                  <div className="card h-100 shadow-sm rounded-lg">
                     <div className="card-body">
                       <h5 className="card-title fw-bold">Secure & Private</h5>
                       <p className="card-text">

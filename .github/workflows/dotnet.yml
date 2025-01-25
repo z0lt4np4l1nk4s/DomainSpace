@@ -30,12 +30,22 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y sshpass
+
       - name: Deploy to VPS
         env:
           SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
         run: |
           echo "Deploying to the VPS..."
           sshpass -p "$SSH_PASSWORD" scp -o StrictHostKeyChecking=no -r ./DomainSpaceBackend/publish/* ${{ secrets.SSH_USER }}@${{ secrets.VPS_IP }}:/var/www/${{ secrets.API_FOLDER_NAME }}
+
+      - name: Copy appsettings for production on VPS
+        env:
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+        run: |
+          echo "Copying appsettings-copy.json to appsettings.Production.json on the VPS..."
+          sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.VPS_IP }} << EOF
+            cp /var/www/${{ secrets.API_FOLDER_NAME }}/appsettings-copy.json /var/www/${{ secrets.API_FOLDER_NAME }}/appsettings.Production.json
+          EOF
 
       - name: Restart API Service
         env:
