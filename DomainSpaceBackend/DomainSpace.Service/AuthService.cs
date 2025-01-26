@@ -114,11 +114,7 @@ public class AuthService : IAuthService
             ConfirmEmailUrl = $"{_appOptions.FrontendAppUrl}/{_appOptions.Routes?.ConfirmEmailRoute}/{encodedData}"
         };
 
-        var sendEmailResult = await _smtpService.SendEmailAsync(EmailTemplates.WelcomeEmail, "Confirm email", recipient, data, cancellationToken);
-        if (!sendEmailResult.IsSuccess)
-        {
-            return ServiceResult.Failure();
-        }
+        await _smtpService.SendEmailAsync(EmailTemplates.WelcomeEmail, "Confirm email", recipient, data, cancellationToken);
 
         return ServiceResult.Success();
     }
@@ -282,7 +278,7 @@ public class AuthService : IAuthService
         var isEmailVerified = await _userManager.IsEmailConfirmedAsync(user);
         if (!isEmailVerified)
         {
-            return ServiceResult.Failure(ErrorDescriber.FailedToSendEmailErrorMessage());
+            return ServiceResult.Failure(ErrorDescriber.EmailAddressNotConfirmedErrorMessage());
         }
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);

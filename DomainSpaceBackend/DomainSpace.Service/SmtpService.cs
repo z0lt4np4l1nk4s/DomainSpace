@@ -25,52 +25,60 @@ public class SmtpService : ISmtpService
     /// <inheritdoc cref="ISmtpService.SendEmailAsync(string, string, List{EmailRecipientDto}, object, CancellationToken)" />
     public async Task<ServiceResult> SendEmailAsync(string template, string subject, List<EmailRecipientDto> recipients, object data, CancellationToken cancellationToken = default)
     {
-        var emailTemplate = await LoadTemplateAsync(EmailTemplates.EmailTemplate);
-        var header = await LoadTemplateAsync(EmailTemplates.Header);
-        var footer = await LoadTemplateAsync(EmailTemplates.Footer);
-        var content = await LoadTemplateAsync(template);
-
-        emailTemplate = emailTemplate
-            .Replace("@{{Header}}", header)
-            .Replace("@{{Content}}", content)
-            .Replace("@{{Footer}}", footer);
-
-        emailTemplate = ReplaceTemplatePlaceholders(emailTemplate, data);
-
-        using var client = await GetSmtpClientAsync(cancellationToken);
-
-        var emailMessage = new MimeMessage();
-
-        emailMessage.From.Add(_senderAddress);
-        var emailEntities = new List<EmailEntity>();
-        var utcNow = DateTime.UtcNow;
-
-        foreach (var recipient in recipients)
+        try
         {
-            emailMessage.To.Add(new MailboxAddress(recipient.Name, recipient.Email));
 
-            emailEntities.Add(new EmailEntity
+            var emailTemplate = await LoadTemplateAsync(EmailTemplates.EmailTemplate);
+            var header = await LoadTemplateAsync(EmailTemplates.Header);
+            var footer = await LoadTemplateAsync(EmailTemplates.Footer);
+            var content = await LoadTemplateAsync(template);
+
+            emailTemplate = emailTemplate
+                .Replace("@{{Header}}", header)
+                .Replace("@{{Content}}", content)
+                .Replace("@{{Footer}}", footer);
+
+            emailTemplate = ReplaceTemplatePlaceholders(emailTemplate, data);
+
+            using var client = await GetSmtpClientAsync(cancellationToken);
+
+            var emailMessage = new MimeMessage();
+
+            emailMessage.From.Add(_senderAddress);
+            var emailEntities = new List<EmailEntity>();
+            var utcNow = DateTime.UtcNow;
+
+            foreach (var recipient in recipients)
             {
-                Id = Guid.NewGuid(),
-                CreationTime = utcNow,
-                UpdateTime = utcNow,
-                UserId = recipient.UserId,
-                Title = subject,
-                Template = emailTemplate,
-                Data = JsonSerializer.Serialize(data),
-            });
+                emailMessage.To.Add(new MailboxAddress(recipient.Name, recipient.Email));
+
+                emailEntities.Add(new EmailEntity
+                {
+                    Id = Guid.NewGuid(),
+                    CreationTime = utcNow,
+                    UpdateTime = utcNow,
+                    UserId = recipient.UserId,
+                    Title = subject,
+                    Template = emailTemplate,
+                    Data = JsonSerializer.Serialize(data),
+                });
+            }
+
+            emailMessage.Subject = subject;
+            emailMessage.Body = new TextPart("html")
+            {
+                Text = emailTemplate,
+            };
+
+            var emailResult = await client.SendAsync(emailMessage, cancellationToken);
+            var addRsult = await _repository.AddRangeAsync(emailEntities, cancellationToken);
+
+            return ServiceResult.Success();
         }
-
-        emailMessage.Subject = subject;
-        emailMessage.Body = new TextPart("html")
+        catch
         {
-            Text = emailTemplate,
-        };
-
-        var emailResult = await client.SendAsync(emailMessage, cancellationToken);
-        var addRsult = await _repository.AddRangeAsync(emailEntities, cancellationToken);
-
-        return ServiceResult.Success();
+            return ServiceResult.Failure(ErrorDescriber.FailedToSendEmailErrorMessage());
+        }
     }
 
     private async Task<string> LoadTemplateAsync(string templateFileName)

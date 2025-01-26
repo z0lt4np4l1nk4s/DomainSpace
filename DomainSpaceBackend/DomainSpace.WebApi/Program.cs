@@ -90,7 +90,6 @@ builder.Services.AddScoped<IDbConnection>(options => new NpgsqlConnection(connec
 
 builder.Services.AddIdentity<UserEntity, RoleEntity>(options =>
 {
-    options.SignIn.RequireConfirmedEmail = true;
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 8;
     options.Password.RequireNonAlphanumeric = true;

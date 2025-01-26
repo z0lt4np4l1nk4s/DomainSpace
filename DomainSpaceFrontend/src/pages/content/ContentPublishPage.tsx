@@ -26,6 +26,7 @@ export default function ContentPublishPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<AddContentModel>({});
   const [subjectFilter, setSubjectFilter] = useState<SubjectFilter>({});
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
 
   const [formValidations, setFormValidations] = useState({
     title: false,
@@ -112,6 +113,8 @@ export default function ContentPublishPage() {
       return;
     }
 
+    setIsSubmitLoading(true);
+
     const response = await contentService.addAsync(formData);
 
     if (response.isSuccess) {
@@ -119,6 +122,8 @@ export default function ContentPublishPage() {
     } else {
       ToastUtil.showErrorMessage(response.errorMessage?.description);
     }
+
+    setIsSubmitLoading(false);
   };
 
   return (
@@ -213,6 +218,7 @@ export default function ContentPublishPage() {
                         type="submit"
                         size="lg"
                         disabled={!checkIfFormIsValid()}
+                        isLoading={isSubmitLoading}
                       >
                         Publish
                       </DefaultButton>

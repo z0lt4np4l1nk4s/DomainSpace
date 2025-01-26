@@ -8,6 +8,7 @@ export default function DefaultButton({
   width,
   children,
   disabled,
+  isLoading,
 }: {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   type?: "submit" | "reset" | "button";
@@ -24,6 +25,7 @@ export default function DefaultButton({
   width?: number;
   children?: React.ReactNode;
   disabled?: boolean;
+  isLoading?: boolean;
 }) {
   return (
     <div className="d-flex align-items-center" style={{ height: "36px" }}>
@@ -32,11 +34,24 @@ export default function DefaultButton({
         className={`btn btn-${color} ${size ? `btn-${size}` : ""} ${
           width ? "" : "w-100"
         }`}
-        onClick={onClick}
-        disabled={disabled}
+        onClick={(e) => {
+          if (!isLoading && onClick) {
+            onClick(e);
+          }
+        }}
+        disabled={disabled || isLoading}
         style={{ width: width ? `${width}px` : undefined }}
       >
-        {children}
+        {isLoading ? (
+          <span
+            className="spinner-border spinner-border-sm text-light"
+            role="status"
+            style={{ width: "1.2rem", height: "1.2rem" }}
+            aria-hidden="true"
+          ></span>
+        ) : (
+          children
+        )}
       </button>
     </div>
   );

@@ -3,6 +3,7 @@ import {
   DefaultButton,
   FooterComponent,
   InputForm,
+  Loader,
   NavBar,
   TextInput,
 } from "../../components";
@@ -21,6 +22,7 @@ export default function LoginPage() {
   });
   const location = useLocation();
   const fromPage = location.state?.from || PageRouteEnum.Home;
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formValidations, setFormValidations] = useState({
     email: true,
@@ -55,6 +57,8 @@ export default function LoginPage() {
       return;
     }
 
+    setIsLoading(true);
+
     const result = await authService.loginAsync(formData);
 
     if (result.isSuccess) {
@@ -62,6 +66,8 @@ export default function LoginPage() {
     } else {
       ToastUtil.showErrorMessage(result.errorMessage?.description);
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -126,7 +132,7 @@ export default function LoginPage() {
                 </div>
 
                 <div className="mt-5">
-                  <DefaultButton size="lg" type="submit">
+                  <DefaultButton size="lg" type="submit" isLoading={isLoading}>
                     Login
                   </DefaultButton>
                 </div>

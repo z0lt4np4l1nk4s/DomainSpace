@@ -143,7 +143,7 @@ public class ContentController : AuthorizedController
             {
                 var extension = file.FileName.Split('.').Last();
 
-                if (_appOptions.AllowedFileExtensions == null || !_appOptions.AllowedFileExtensions.Contains(extension))
+                if (_appOptions.AllowedFileExtensions == null || !_appOptions.AllowedFileExtensions.Contains(extension.ToLower()))
                 {
                     return ServiceResult<List<AddFileDto>>.Failure(ErrorDescriber.FileExtensionNotSupportedErrorMessage());
                 }

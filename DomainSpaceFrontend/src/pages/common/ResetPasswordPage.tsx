@@ -19,6 +19,7 @@ export default function ResetPasswordPage() {
   const location = useLocation();
   const params = useParams();
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const [isTokenValid, setIsTokenValid] = useState(false);
   const [formData, setFormData] = useState<ResetPasswordModel>({
     email: new URLSearchParams(location.search).get("email") || "",
@@ -63,6 +64,8 @@ export default function ResetPasswordPage() {
       return;
     }
 
+    setIsSubmitLoading(true);
+
     const response = await authService.resetPasswordAsync(formData);
 
     if (response.isSuccess) {
@@ -71,6 +74,8 @@ export default function ResetPasswordPage() {
     } else {
       ToastUtil.showErrorMessage(response.errorMessage?.description);
     }
+
+    setIsSubmitLoading(false);
   };
 
   useEffect(() => {
@@ -156,7 +161,11 @@ export default function ResetPasswordPage() {
                       </div>
 
                       <div className="mt-5">
-                        <DefaultButton size="lg" type="submit">
+                        <DefaultButton
+                          size="lg"
+                          type="submit"
+                          isLoading={isSubmitLoading}
+                        >
                           Reset Password
                         </DefaultButton>
                       </div>

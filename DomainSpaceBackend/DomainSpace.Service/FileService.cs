@@ -107,8 +107,16 @@ public class FileService : IFileService
             }
         }
 
+        await _repository.SaveChangesAsync(cancellationToken);
+
         if (model.NewFiles.Any())
         {
+            foreach (var file in model.NewFiles)
+            {
+                file.OwnerId = model.OwnerId;
+                file.OwnerType = model.OwnerType;
+            }
+
             await AddAsync(model.Domain, model.NewFiles, cancellationToken);
         }
 

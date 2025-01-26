@@ -25,6 +25,7 @@ const subjectService = new SubjectService();
 
 export default function ContentEditPage() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const params = useParams();
 
   const navigate = useNavigate();
@@ -116,6 +117,8 @@ export default function ContentEditPage() {
       return;
     }
 
+    setIsSubmitLoading(true);
+
     const response = await contentService.updateAsync(formData);
 
     if (response.isSuccess) {
@@ -123,6 +126,8 @@ export default function ContentEditPage() {
     } else {
       ToastUtil.showErrorMessage(response.errorMessage?.description);
     }
+
+    setIsSubmitLoading(false);
   };
 
   useEffect(() => {
@@ -283,6 +288,7 @@ export default function ContentEditPage() {
                         <DefaultButton
                           type="submit"
                           disabled={!checkIfFormIsValid()}
+                          isLoading={isSubmitLoading}
                         >
                           Save changes
                         </DefaultButton>

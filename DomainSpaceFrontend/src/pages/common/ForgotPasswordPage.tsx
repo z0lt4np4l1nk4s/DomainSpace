@@ -16,7 +16,7 @@ export default function ForgotPasswordPage() {
   const [formData, setFormData] = useState({
     email: "",
   });
-
+  const [isLoading, setIsLoading] = useState(false);
   const [formValidations, setFormValidations] = useState({
     email: true,
   });
@@ -50,6 +50,8 @@ export default function ForgotPasswordPage() {
       return;
     }
 
+    setIsLoading(true);
+
     const result = await authService.sendResetPasswordEmailAsync(
       formData.email
     );
@@ -61,6 +63,8 @@ export default function ForgotPasswordPage() {
     } else {
       ToastUtil.showErrorMessage(result.errorMessage?.description);
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -97,7 +101,7 @@ export default function ForgotPasswordPage() {
                 </div>
 
                 <div className="mt-5">
-                  <DefaultButton size="lg" type="submit">
+                  <DefaultButton size="lg" type="submit" isLoading={isLoading}>
                     Send Reset Email
                   </DefaultButton>
                 </div>

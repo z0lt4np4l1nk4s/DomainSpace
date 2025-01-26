@@ -27,6 +27,7 @@ export default function SubjectModalComponent({
     name: false,
     domain: false,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (item) {
@@ -147,10 +148,12 @@ export default function SubjectModalComponent({
                   {"Close"}
                 </DefaultButton>
                 <DefaultButton
-                  disabled={!checkIfFormValid()}
+                  disabled={!checkIfFormValid() || isLoading}
                   onClick={() => {
-                    if (onConfirm) {
+                    if (onConfirm && !isLoading) {
+                      setIsLoading(true);
                       onConfirm(formData!);
+                      setIsLoading(false);
                     }
                   }}
                   color="success"

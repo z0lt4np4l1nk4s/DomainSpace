@@ -24,6 +24,7 @@ export default function RegisterPage() {
     email: false,
     password: false,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -45,6 +46,16 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const isFormValid = Object.values(formValidations).every(
+      (isValid) => isValid
+    );
+
+    if (!isFormValid) {
+      return;
+    }
+
+    setIsLoading(true);
+
     const response = await authService.registerAsync(formData);
 
     if (response.isSuccess) {
@@ -53,6 +64,8 @@ export default function RegisterPage() {
     } else {
       ToastUtil.showErrorMessage(response.errorMessage?.description);
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -174,6 +187,7 @@ export default function RegisterPage() {
                   <DefaultButton
                     size="lg"
                     type="submit"
+                    isLoading={isLoading}
                     disabled={
                       !Object.values(formValidations).every(
                         (isValid) => isValid

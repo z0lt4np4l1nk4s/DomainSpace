@@ -20,6 +20,8 @@ export default function AccountPage() {
   const [passwordFormData, setPasswordFormData] = useState<ChangePasswordModel>(
     {}
   );
+  const [profileSubmitIsLoading, setProfileSubmitIsLoading] = useState(false);
+  const [passwordSubmitIsLoading, setPasswordSubmitIsLoading] = useState(false);
 
   const handleProfileInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -44,6 +46,8 @@ export default function AccountPage() {
   ) => {
     event.preventDefault();
 
+    setProfileSubmitIsLoading(true);
+
     const result = await userService.updateAsync(
       TokenService.getUserId()!,
       profileFormData
@@ -54,12 +58,16 @@ export default function AccountPage() {
     } else {
       ToastUtil.showErrorMessage(result.errorMessage?.description);
     }
+
+    setProfileSubmitIsLoading(false);
   };
 
   const handlePasswordChange = async (
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
+
+    setPasswordSubmitIsLoading(true);
 
     const result = await authService.changePasswordAsync(passwordFormData);
 
@@ -73,6 +81,8 @@ export default function AccountPage() {
     } else {
       ToastUtil.showErrorMessage(result.errorMessage?.description);
     }
+
+    setPasswordSubmitIsLoading(false);
   };
 
   useEffect(() => {
@@ -115,7 +125,11 @@ export default function AccountPage() {
                     value={profileFormData.lastName}
                     onChange={handleProfileInputChange}
                   />
-                  <DefaultButton width={180} type="submit">
+                  <DefaultButton
+                    width={180}
+                    type="submit"
+                    isLoading={profileSubmitIsLoading}
+                  >
                     {"Update info"}
                   </DefaultButton>
                 </InputForm>
@@ -143,7 +157,11 @@ export default function AccountPage() {
                       value={passwordFormData.confirmNewPassword}
                       onChange={handlePasswordInputChange}
                     />
-                    <DefaultButton width={180} type="submit">
+                    <DefaultButton
+                      width={180}
+                      type="submit"
+                      isLoading={passwordSubmitIsLoading}
+                    >
                       {"Change password"}
                     </DefaultButton>
                   </InputForm>
